@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block titulo %}
+	Evaluación del desempeño
+{% endblock %}
+
+{% block css %}
+	<link rel="stylesheet" href="{% static 'app/plugins/chosen/chosen.min.css' %}">
+{% endblock %}
+
+{% block contenido %}
+
+	<div class="row">
+		<div class="col text-center">
+			<h5><strong>EVALUACIÓN DEL DESEMPEÑO DEL DOCENTE POR LA UNIDAD ACADÉMICA EN EL AULA</strong></h5>
+		</div>
+	</div>
+
+	<hr>
+	
+	<div class="row">
+		<div class="col">
+			<strong>Objetivo</strong>: Evaluar el desempeño del docente en el salón de clases.
+		</div>
+		<div class="col text-right">
+			<strong>Periodo</strong>:  {{periodo}}
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="row mt-4">
+		<div class="col-md-3">
+			<div class="form-group">
+				<label for="fecha"><strong>Fecha</strong></label>
+				<input type="date" class="form-control" value="{{ fecha }}" id="txt-fecha">
+			</div>
+
+			<div class="form-group">
+				<label for="docente"><strong>Docente</strong></label>
+				<select class="form-control chosen" id="cbo-docente">
+					<option value="">Seleccione</option>
+					{% for d in docentes %}
+					<option value="{{d.id}}">{{ d }}</option>
+					{% endfor %}
+				</select>
+				<input type="hidden" id="txt-periodo" value="{{periodo.id}}">
+			</div>
+
+			<div class="form-group">
+				<label for="asignatura"><strong>Asignatura</strong></label>
+				<select class="form-control chosen" id="cbo-asignatura">
+					<option value="">Seleccione</option>
+					{% for a in asignaturas %}
+					<option value="{{ a.id }}">{{ a }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<button data-url="{% url 'guardar_evaluacion' %}" class="btn btn-primary btn-block" id="btn-guardar-eval">Guardar evaluación</button>
+
+			<p class="mt-4 mb-4">
+				<strong>Escala de evaluación</strong>
+				<ol reversed>
+					<li>Excelente</li>
+					<li>Muy Bueno</li>
+					<li>Bueno</li>
+					<li>Regular</li>
+					<li>Malo</li>
+				</ol>
+			</p>
+		</div>
+		<div class="col-md-9">
+			<table class="table table-sm table-striped">
+				<thead>
+					<tr>
+						<th>VARIABLES</th>
+						<th class="text-center">1</th>
+						<th class="text-center">2</th>
+						<th class="text-center">3</th>
+						<th class="text-center">4</th>
+						<th class="text-center">5</th>
+						<th>OBSERVACIONES</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for var in variables %}
+					<tr class="fila-variable" data-idv="{{ var.id }}">
+						<td class="align-middle" width="50%">{{ var.descripcion }}</td>
+
+						<td class="text-center align-middle"><input data-idv="{{ var.id }}" type="radio" name="variable-{{ var.id }}" value="1"></td>
+						<td class="text-center align-middle"><input data-idv="{{ var.id }}" type="radio" name="variable-{{ var.id }}" value="2"></td>
+						<td class="text-center align-middle"><input data-idv="{{ var.id }}" type="radio" name="variable-{{ var.id }}" value="3"></td>
+						<td class="text-center align-middle"><input data-idv="{{ var.id }}" type="radio" name="variable-{{ var.id }}" value="4"></td>
+						<td class="text-center align-middle"><input data-idv="{{ var.id }}" type="radio" name="variable-{{ var.id }}" value="5"></td>
+
+						<td class="align-middle"><input data-idv="{{ var.id }}" type="text" class="form-control form-control-sm form-control-plaintext txt-observaciones" placeholder="Opcional"></td>
+					</tr>
+						
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+
+{% block js %}
+	<script src="{% static 'app/plugins/chosen/chosen.min.js' %}"></script>
+	<script>
+		$('.chosen').chosen();
+	</script>
+{% endblock %}

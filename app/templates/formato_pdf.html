@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Evaluación</title>
+		<style>
+			body {color: #4D4D4D; font-size: 9pt; }
+			h1, h2 { text-align: center; margin: 0; }
+			table.table-data, table.table-data th, table.table-data td { border-collapse: collapse; border: 1px solid #858585; font-size: 8pt;}
+			table.table-font-small, table.table-font-small td {font-size: 6pt;}
+			td, th { text-align: center; padding: 2px 0 0 0; }
+			img {
+				width: 70px;
+			}
+
+			@page {
+			size: letter portrait;
+				@frame header_frame {           /* Static Frame */
+					-pdf-frame-content: header_content;
+					left: 30pt; width: 552pt; top: 30pt; height: 190pt;
+
+				}
+
+				@frame footer_frame {           /* Static frame */
+					-pdf-frame-content: footer_content;
+					left: 30pt; width: 552pt; top: 740pt; height: 20pt;
+
+					
+				}
+
+				@frame content_frame {          /* Content Frame */
+					left: 30pt; width: 552pt; top: 230pt; height: 450pt;
+
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="header_content">
+			<table class="">
+				<tr>
+					<td width="25%">&nbsp;</td>
+					<td>&nbsp;</td>
+					<td width="25%"><b>REG-RH.105</b></td>
+				</tr>
+			</table>
+
+			<table class="">
+				<tr>
+					<td width="25%"><img src="{{logo}}" alt=""></td>
+					<td>
+						<h1>
+						UNIVERSIDAD CATOLICA DE HONDURAS <br>
+						NUESTRA SEÑORA REINA DE LA PAZ
+						</h1>
+					</td>
+					<td width="25%">&nbsp;</td>
+				</tr>
+			</table>
+
+			<table class="" style="margin-top: 20px">
+				<tr>
+					<td width="25%">&nbsp;</td>
+					<td>
+						<h2>
+						EVALUACIÓN DEL DESEMPEÑO DEL DOCENTE <br>
+						POR LA UNIDAD ACADÉMICA EN EL AULA
+						</h2>
+					</td>
+					<td width="25%">&nbsp;</td>
+				</tr>
+			</table>
+
+			<table class="" style="margin-top: 15px">
+				<tr>
+					<td style="text-align: left">
+						<b>OBJETIVO</b>: Evaluar el desempeño del docente en el Salón de Clases.
+					</td>
+				</tr>
+			</table>
+
+			<table style="margin-top: 15px;">
+				<tr style="height: 10px">
+					<td width="15%" style="text-align: left">Docente:</td>
+					<td style="text-align: left; border-bottom: 1px solid #000; padding-left: 2px">{{ e.docente }}</td>
+					<td width="5%">&nbsp;</td>
+					<td width="25%" style="text-align: left">Asignatura evaluada:</td>
+					<td style="text-align: left; border-bottom: 1px solid #000; padding-left: 2px">{{ e.asignatura.nombre }}</td>
+				</tr>				
+			</table>
+
+			<table style="margin-top: 15px;">
+				<tr style="height: 10px">
+					<td width="15%" style="text-align: left">Fecha:</td>
+					<td style="text-align: left; border-bottom: 1px solid #000; padding-left: 2px">{{ e.fecha|date:'d/m/Y' }}</td>
+					<td width="5%">&nbsp;</td>
+					<td width="25%" style="text-align: left">Periodo académico:</td>
+					<td style="text-align: left; border-bottom: 1px solid #000; padding-left: 2px">Periodo {{ e.periodo }}</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div id="content_frame">
+			<table class="table-data">
+				<thead>
+					<tr>
+						<th width="55%">VARIABLES</th>
+						<th width="4%">1</th>
+						<th width="4%">2</th>
+						<th width="4%">3</th>
+						<th width="4%">4</th>
+						<th width="4%">5</th>
+						<th width="25%">OBSERVACIONES</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for d in e.detalleevaluacion_set.all %}
+					<tr>
+						<td style="text-align: left; padding-left: 4px">{{ d.variable.descripcion }}</td>
+						<td>{% if d.calificacion == 1 %}X{% else %}&nbsp;{% endif %}</td>
+						<td>{% if d.calificacion == 2 %}X{% else %}&nbsp;{% endif %}</td>
+						<td>{% if d.calificacion == 3 %}X{% else %}&nbsp;{% endif %}</td>
+						<td>{% if d.calificacion == 4 %}X{% else %}&nbsp;{% endif %}</td>
+						<td>{% if d.calificacion == 5 %}X{% else %}&nbsp;{% endif %}</td>
+						<td style="text-align: left; padding-left: 4px">{% if d.observacion %}{{d.observacion}}{% else %}&nbsp;{% endif %}</td>
+					</tr>
+					{% endfor %}
+				</tbody>				
+			</table>
+
+			<br>
+			<br>
+
+			<table>
+				<tr>
+					<td width="30%" style="text-align: left; padding-left: 4px; vertical-align: top;">Escala de Evaluación:</td>
+					<td width="5%" style="text-align: left; padding-left: 4px">
+						5 <br>
+						4 <br>
+						3 <br>
+						2 <br>
+						1
+					</td>
+					<td style="text-align: left; padding-left: 4px">
+						Excelente <br>
+						Muy Bueno <br>
+						Bueno <br>
+						Regular <br>
+						Malo
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="footer_content">ED. 01 / NOV. 02, 2004</div>
+	</body>
+</html>

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load l10n %}
+
+{% block titulo %}
+	Evaluaciones realizadas
+{% endblock %}
+
+{% block css %}
+	<link rel="stylesheet" href="{% static 'app/plugins/datatable/dataTables.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block contenido %}
+
+	<div class="row">
+		<div class="col-md-3">
+			<h4>Periodos</h4>
+
+			{% regroup periodos by anio as anio_list %}			
+			<ul class="list-group">
+			{% for anio in anio_list %}			
+				<li class="list-group-item">
+					<strong>{{ anio.grouper }}</strong>
+
+					<ul>
+						{% for p in anio.list %}
+						<li><a href="{% url 'evaluaciones' %}?pid={{ p.id }}">Periodo {{ p.numero }}</a> {% if p == periodo %}←{% endif %}</li>
+						{% endfor %}
+					</ul>
+				</li>
+			{% endfor %}
+			</ul>
+		</div>
+
+		<div class="col-md-9">
+			<h4>Evaluaciones del periodo</h4>
+
+			<table class="table table-sm" id="tbl-evaluaciones">
+				<thead>
+					<tr>
+						<th>Fecha</th>
+						<th>Docente</th>
+						<th>Asignatura</th>
+						<th>Calificación</th>
+						<th>Formato</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for e in evals %}
+					<tr>
+						<td>{{ e.fecha }}</td>
+						<td>{{ e.docente }}</td>
+						<td>{{ e.asignatura }}</td>
+						<td>{{ e.calificacion|unlocalize }}%</td>
+						<td>
+							<a href="{% url 'evaluacion' e.id %}" target="_blank">Descargar</a>
+						</td>
+					</tr>					
+					{% empty %}
+					<tr>
+						<td colspan="5">No hay evaluaciones en el periodo seleccionado</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+{% endblock %}
+
+{% block js %}
+	<script src="{% static 'app/plugins/datatable/jquery.dataTables.min.js' %}"></script>
+	<script src="{% static 'app/plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+	<script>
+		$('#tbl-evaluaciones').DataTable();
+	</script>
+{% endblock %}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% load static %}
+	<meta charset="UTF-8">
+	<title>{% block titulo %}{% endblock %}</title>
+	<link rel="stylesheet" href="{% static 'app/bootstrap/css/bootstrap.css' %}">
+	{% block css %}{% endblock %}
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+</head>
+<body>	
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+		<a class="navbar-brand" href="#"><strong>UNICAH</strong></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarColor02">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item{% if request.session.page == 'home' %} active font-weight-bold{% endif %}">
+					<a class="nav-link" href="{% url 'home' %}">Evaluar</a>
+				</li>
+
+				<li class="nav-item{% if request.session.page == 'evaluaciones' %} active font-weight-bold{% endif %}">
+					<a class="nav-link" href="{% url 'evaluaciones' %}">Evaluaciones</a>
+				</li>
+
+				<li class="nav-item{% if request.session.page == 'mejor_docente' %} active font-weight-bold{% endif %}">
+					<a class="nav-link" href="{% url 'mejor_docente' %}">Mejor docente</a>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'log_out' %}">Salir</a>
+				</li>
+			</ul>
+
+			<span class="text-white">Hola <strong>{{ request.user.get_full_name }}</strong></span>		
+		</div>
+	</nav>
+
+	<div class="container-fluid">
+		{% block contenido %}{% endblock %}
+	</div>
+
+<script src="{% static 'app/js/jquery.min.js' %}"></script>
+<script src="{% static 'app/bootstrap/js/bootstrap.js' %}"></script>
+<script src="{% static 'app/js/notify.min.js' %}"></script>
+{% block js %}{% endblock %}
+<script src="{% static 'app/js/app.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load l10n %}
+
+{% block titulo %}
+	Mejor docente por facultad
+{% endblock %}
+
+{% block contenido %}
+
+	<div class="row">
+		<div class="col">
+			<h3><strong>Periodo {{ periodo }}</strong></h3> <hr>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col">
+			{% regroup evaluaciones by facultad as facultad_list %}
+
+			{% for f in facultad_list %}
+				<h5 class="mt-4 pl-2 mb-3"><strong>{{ f.grouper }}</strong></h5>
+
+				<ul class="list-group">
+					{% for d in f.list %}
+
+					<li class="list-group-item {% if forloop.counter == 1 %}text-success font-weight-bold{% endif %}">
+						<div class="row">
+							<div class="col">{{ d.docente.nombre }} {{ d.docente.apellido }}</div>
+							<div class="col">{{ d.promedio|unlocalize }}%</div>
+							<div class="col">
+								{% if forloop.counter == 1 %}
+									← Mejor docente de la facultad
+								{% endif %}
+							</div>
+						</div>						
+					</li>
+					{% endfor %}
+				</ul>
+			{% endfor %}
+		</div>
+	</div>
+	
+{% endblock %}
